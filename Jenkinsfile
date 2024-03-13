@@ -1,10 +1,40 @@
-/* Requires the Docker Pipeline plugin */
 pipeline {
-    agent { docker { image 'node:20.11.1-alpine3.19' } }
+    agent any
+
     stages {
-        stage('build') {
+        stage('Install Dependencies') {
             steps {
-                sh 'node --version'
+                script {
+                    // Menginstal dependensi Node.js menggunakan npm
+                    sh 'npm install'
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    // Menjalankan proses build
+                    sh 'npm run build'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    // Menjalankan skrip pengujian
+                    sh 'npm test'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    // Menjalankan proses deployment
+                    sh 'npm run deploy'
+                }
             }
         }
     }
